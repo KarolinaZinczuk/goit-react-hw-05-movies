@@ -4,13 +4,11 @@ import { getReviews } from "API/fetchMovies";
 
 const Reviews = () => {
     const [reviews, setReviews] = useState([]);
-    const [error, setError] = useState('');
     const { movieId } = useParams();
 
     useEffect(() => {
         getReviews(movieId)
             .then(results => setReviews(results))
-            .catch(error => setError(error));
     }, [movieId]);
     
     return (
