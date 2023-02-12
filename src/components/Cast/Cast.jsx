@@ -4,13 +4,11 @@ import { getCast, IMAGE_URL } from "API/fetchMovies";
 
 const Cast = () => {
     const [cast, setCast] = useState([]);
-    const [error, setError] = useState('');
     const { movieId } = useParams();
 
     useEffect(() => {
         getCast(movieId)
             .then(results => setCast(results))
-            .catch(error => setError(error));
     }, [movieId]);
 
     return (
