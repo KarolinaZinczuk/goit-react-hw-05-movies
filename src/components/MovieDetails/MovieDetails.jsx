@@ -4,13 +4,11 @@ import { getDetails, IMAGE_URL } from "API/fetchMovies";
 
 const MovieDetails = () => {
     const [movie, setMovie] = useState(null);
-    const [error, setError] = useState('');
     const { movieId } = useParams();
 
     useEffect(() => {
         getDetails(movieId)
             .then(results => setMovie(results))
-            .catch(error => setError(error));
     }, [movieId]);
     
     return (
