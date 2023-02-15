@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useLocation, Link } from "react-router-dom";
 import { searchMovies } from "API/fetchMovies";
 
+import styles from './Pages.module.css';
+
 const Movies = () => {
     const [movies, setMovies] = useState(null);
-    const [error, setError] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get("query");
     const location = useLocation();
@@ -16,34 +17,39 @@ const Movies = () => {
         input.reset();
     };
 
-    useEffect(() => {
-        searchMovies()
-            .then(results => setMovies([...results]))
-            .catch(error => setError(error.mesage))
+   useEffect(() => {
+        if (query === "" || query === null) return;
+        const getMovies = async () => {
+            const { results } = await searchMovies(query);
+            setMovies(results);
+        };
+        getMovies();
     }, [query]);
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="query" autoComplete="off" placeholder="Search movie" />
-                <button type="submit">
-                    Search
-                </button>
-            </form>
+            <div className={styles.Searchbar}>
+                <form className={styles.SearchForm} onSubmit={handleSubmit}>
+                    <input className={styles.SearchFormInput} type="text" name="query" autoComplete="off" placeholder="Search movie" />
+                    <button type="submit" className={styles.SearchFormButton}>
+                        Search
+                    </button>
+                </form>
 
-            <ul>
-                {movies &&
-                    movies.map(({ id, title }) => (
-                        <li key={id}>
-                            <Link
-                                to={`/movies/${id}`}
-                                state={{ location }}>
-                                <p>{title}</p>
-                            </Link>
-                        </li>
-                    ))}
-            </ul>
-            {error && <p> Something went wrong, please try again.</p>}
+                <ul className={styles.list}>
+                    {movies &&
+                        movies.map(({ id, title }) => (
+                            <li key={id}>
+                                <Link
+                                    to={`/movies/${id}`}
+                                    state={{from: location }}>
+                                    <p>{title}</p>
+                                </Link>
+                            </li>
+                        ))}
+                </ul>
+
+            </div>
         </>
     );
 };
