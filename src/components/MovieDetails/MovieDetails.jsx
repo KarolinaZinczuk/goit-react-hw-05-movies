@@ -2,6 +2,8 @@ import { useParams, Link, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getDetails, IMAGE_URL } from "API/fetchMovies";
 
+import styles from './MovieDetails.module.css';
+
 const MovieDetails = () => {
     const [movie, setMovie] = useState(null);
     const { movieId } = useParams();
@@ -17,10 +19,10 @@ const MovieDetails = () => {
                 <p> This movie is not found</p>
             ) : (
                 <>
-                    <Link to="/">
-                        <button type="button">GO BACK</button>
+                    <Link to="/" className={styles.go_back}>
+                        GO BACK
                     </Link>
-                    <div>
+                    <div className={styles.details_container}>
                         <div>
                             <img
                                 src={movie.poster_path
@@ -33,26 +35,26 @@ const MovieDetails = () => {
                             />
                         </div>
                     
-                        <div>
-                            <h2>{movie.title}</h2>
-                            <p>User score: {`${movie.vote_average * 10}`}%</p>
-                            <h3>Overview</h3>
-                            <p>{`${movie.overview}`}</p>
-                            <h3>Genres</h3>
+                        <div className={styles.info}>
+                            <h2 className={styles.title}>{movie.title}</h2>
+                            <p className={styles.score}>User score: {`${movie.vote_average * 10}`}%</p>
+                            <h3 className={styles.overview}>Overview</h3>
+                            <p className={styles.info_overview}>{`${movie.overview}`}</p>
+                            <h3 className={styles.genres}>Genres</h3>
                             <p>{`${movie.genres.map(genre => genre.name).join(', ')}`}</p>
                         </div>
                     </div>
                 </>
             )}
 
-            <h2>Additional information</h2>
+            <h2 className={styles.more_information}>Additional information</h2>
             <div>
-                <Link to={"cast"}>
-                    <button type="button">Cast</button>
+                <Link to={"cast"} className={styles.link}>
+                    <button type="button" className={styles.button}>Cast</button>
                 </Link>
 
-                <Link to={"reviewes"}>
-                    <button type="button">Reviews</button>
+                <Link to={"reviews"} className={styles.link}>
+                    <button type="button" className={styles.button}>Reviews</button>
                 </Link>
             </div>
             <Outlet/>
