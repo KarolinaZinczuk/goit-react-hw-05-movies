@@ -12,7 +12,7 @@ export const getTrending = async () => {
 
 export const searchMovies = async (query) => {
     const response = await axios.get(`/search/movie?api_key=${API_KEY}&query=${query}&page=1`);
-    return response.data.results;
+    return response.data;
 }
 
 export const getDetails = async (movieId) => {
